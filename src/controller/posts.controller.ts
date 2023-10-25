@@ -1,9 +1,8 @@
 import express from "express";
-import mongoose from "mongoose";
 
 export const getAllPosts = async (
-  req: express.Request,
-  res: express.Response,
+  _req: express.Request,
+  _res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
@@ -13,8 +12,8 @@ export const getAllPosts = async (
 };
 
 export const getPostsById = async (
-  req: express.Request,
-  res: express.Response,
+  _req: express.Request,
+  _res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
@@ -24,8 +23,8 @@ export const getPostsById = async (
 };
 
 export const createPosts = async (
-  req: express.Request,
-  res: express.Response,
+  _req: express.Request,
+  _res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
@@ -35,8 +34,8 @@ export const createPosts = async (
 };
 
 export const updatePosts = async (
-  req: express.Request,
-  res: express.Response,
+  _req: express.Request,
+  _res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
@@ -46,8 +45,8 @@ export const updatePosts = async (
 };
 
 export const deletePosts = async (
-  req: express.Request,
-  res: express.Response,
+  _req: express.Request,
+  _res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
@@ -57,8 +56,8 @@ export const deletePosts = async (
 };
 
 export const getLatestPosts = async (
-  req: express.Request,
-  res: express.Response,
+  _req: express.Request,
+  _res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {

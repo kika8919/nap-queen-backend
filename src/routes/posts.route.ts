@@ -3,7 +3,7 @@ import { PostsController } from "../controller";
 import { PostsValidation } from "../validations";
 import { validate } from "../middlewares/validate";
 
-const router = express.Router();
+export const router = express.Router();
 
 router.get("/", PostsController.getAllPosts);
 router.get(
@@ -27,5 +27,3 @@ router.delete(
   PostsController.deletePosts
 );
 router.get("/latest", PostsController.getLatestPosts);
-
-export { router };
