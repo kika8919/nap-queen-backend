@@ -6,6 +6,7 @@ import cors from "cors";
 import corsOptions from "./config/corsOption";
 import mongoose from "mongoose";
 import connectDB from "./config/db.connect";
+import router from "./routes";
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use("/api", router);
 app.get("/health", (_req, res) => {
   res.json({
     uptime: process.uptime(),
