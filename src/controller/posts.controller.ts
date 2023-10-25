@@ -1,6 +1,5 @@
 import express from "express";
 import mongoose from "mongoose";
-const Posts = mongoose.model("Post");
 
 export const getAllPosts = async (
   req: express.Request,

@@ -1,20 +1,31 @@
 import express from "express";
-import {
-  getAllPosts,
-  getPostsById,
-  getLatestPosts,
-  createPosts,
-  updatePosts,
-  deletePosts,
-} from "../controller/posts.controller";
+import { PostsController } from "../controller";
+import { PostsValidation } from "../validations";
+import { validate } from "../middlewares/validate";
 
 const router = express.Router();
 
-router.get("/posts", getAllPosts);
-router.get("/posts/:id", getPostsById);
-router.post("/posts", createPosts);
-router.put("/posts/:id", updatePosts);
-router.delete("/posts/:id", deletePosts);
-router.get("/posts/latest", getLatestPosts);
+router.get("/", PostsController.getAllPosts);
+router.get(
+  "/:id",
+  validate(PostsValidation.getPostsById),
+  PostsController.getPostsById
+);
+router.post(
+  "/",
+  validate(PostsValidation.createPosts),
+  PostsController.createPosts
+);
+router.put(
+  "/:id",
+  validate(PostsValidation.updatePosts),
+  PostsController.updatePosts
+);
+router.delete(
+  "/:id",
+  validate(PostsValidation.deletePosts),
+  PostsController.deletePosts
+);
+router.get("/latest", PostsController.getLatestPosts);
 
 export { router };
