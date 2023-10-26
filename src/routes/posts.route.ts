@@ -2,11 +2,12 @@ import express from "express";
 import { PostsController } from "../controller";
 import { PostsValidation } from "../validations";
 import { validate } from "../middlewares/validate";
+import { validateAPIKey } from "../auth/apiKeyValidation";
 
 export const router = express.Router();
 
 router.get("/", PostsController.getAllPosts);
-router.get("/latest", PostsController.getLatestPosts);
+router.get("/latest", validateAPIKey, PostsController.getLatestPosts);
 router.get(
   "/:id",
   validate(PostsValidation.getPostsById),
