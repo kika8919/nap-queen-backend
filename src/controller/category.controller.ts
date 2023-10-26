@@ -58,7 +58,7 @@ export const deleteCategory = async (
   try {
     const { id } = req.params;
     await Categories.findByIdAndDelete(id);
-    res.json({ status: "delete successful" });
+    res.json({ message: "success" });
   } catch (err) {
     next(err);
   }

@@ -42,12 +42,12 @@ export const createPosts = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
-): Promise<void> => {
+): Promise<void | express.Response<any>> => {
   try {
     const { title, content, category_id } = req.body;
     const category = await Categories.findById(category_id);
     if (!category) {
-      res.status(400).json({ error: "Invalid category_id" });
+      return res.status(400).json({ error: "Invalid category_id" });
     }
     const newPost = new Posts({
       title,
@@ -90,11 +90,14 @@ export const deletePosts = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
-): Promise<void> => {
+): Promise<void | express.Response<any>> => {
   try {
     const { id } = req.params;
-    await Posts.findByIdAndDelete(id);
-    res.json({ status: "delete successful" });
+    const response = await Posts.findByIdAndDelete(id);
+    if (response == null) {
+      return res.json({ message: "post with input id not found" });
+    }
+    res.json({ message: "success" });
   } catch (err) {
     next(err);
   }
