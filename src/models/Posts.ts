@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
-import { CategorySchema } from "./Category";
 
 interface IPosts {
   title: string;
   content: string;
-  category_id: any;
+  category_id: mongoose.Schema.Types.ObjectId;
 }
 
 interface IPostsDocument extends IPosts, Document {}
@@ -13,7 +12,10 @@ const PostsSchema = new mongoose.Schema<IPostsDocument>(
   {
     title: String,
     content: String,
-    category_id: { type: CategorySchema },
+    category_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
   },
   {
     timestamps: true,

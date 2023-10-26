@@ -1,55 +1,82 @@
 import express from "express";
+import { Categories, Posts } from "../models";
 
 export const getAllPosts = async (
   _req: express.Request,
-  _res: express.Response,
+  res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
+    const allPosts = await Posts.find();
+    res.json(allPosts);
   } catch (err) {
     next(err);
   }
 };
 
 export const getPostsById = async (
-  _req: express.Request,
-  _res: express.Response,
+  req: express.Request,
+  res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
+    const { id } = req.params;
+    const post = await Posts.findById(id);
+    res.json(post);
   } catch (err) {
     next(err);
   }
 };
 
 export const createPosts = async (
-  _req: express.Request,
-  _res: express.Response,
+  req: express.Request,
+  res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
+    const { title, content, category_id } = req.body;
+    const category = await Categories.findById(category_id);
+    if (!category) {
+      res.status(400).json({ error: "Invalid category_id" });
+    }
+    const newPost = new Posts({ title, content, category_id });
+    const result = await Posts.create(newPost);
+    res.json(result);
   } catch (err) {
     next(err);
   }
 };
 
 export const updatePosts = async (
-  _req: express.Request,
-  _res: express.Response,
+  req: express.Request,
+  res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const updatedPost = await Posts.findByIdAndUpdate(
+      id,
+      {
+        $set: { title, content },
+      },
+      { new: true }
+    );
+    res.json(updatedPost);
   } catch (err) {
     next(err);
   }
 };
 
 export const deletePosts = async (
-  _req: express.Request,
-  _res: express.Response,
+  req: express.Request,
+  res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
+    const { id } = req.params;
+    await Posts.findByIdAndDelete(id);
+    res.json({ status: "delete successful" });
   } catch (err) {
     next(err);
   }
