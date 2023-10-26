@@ -7,7 +7,6 @@
     "start": "ts-node src/app",
     "dev": "nodemon --config restart.json",
     "build": "rimraf dist && tsc -p tsconfig.build.json",
-    "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
     "build:watch": "tsc -w -p tsconfig.build.json",
     "test": "mocha -r ts-node/register -r dotenv/config test/**/*.test.ts ",
@@ -56,7 +55,6 @@
     "typescript": "~4.3.5"
   },
   "pre-commit": [
-    "ts.check",
     "build",
     "add-build"
   ]
