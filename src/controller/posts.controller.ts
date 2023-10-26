@@ -21,8 +21,18 @@ export const getPostsById = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const post = await Posts.findById(id);
-    res.json(post);
+
+    // populating category here for sending in response
+    const post = await Posts.findById(id).populate(
+      "category_id",
+      "category",
+      "Category"
+    );
+    const responseCopy = { ...(post.toJSON() as any) };
+    responseCopy.category = responseCopy.category_id.category;
+    responseCopy.category_id = responseCopy.category_id._id;
+
+    res.json(responseCopy);
   } catch (err) {
     next(err);
   }
