@@ -39,7 +39,11 @@ export const createPosts = async (
     if (!category) {
       res.status(400).json({ error: "Invalid category_id" });
     }
-    const newPost = new Posts({ title, content, category_id });
+    const newPost = new Posts({
+      title,
+      content,
+      category_id,
+    });
     const result = await Posts.create(newPost);
     res.json(result);
   } catch (err) {
@@ -62,7 +66,11 @@ export const updatePosts = async (
       },
       { new: true }
     );
-    res.json(updatedPost);
+    if (!updatedPost) {
+      res.json({ message: "post with input id not found" });
+    } else {
+      res.json(updatedPost);
+    }
   } catch (err) {
     next(err);
   }
@@ -84,10 +92,39 @@ export const deletePosts = async (
 
 export const getLatestPosts = async (
   _req: express.Request,
-  _res: express.Response,
+  res: express.Response,
   next: express.NextFunction
 ): Promise<void> => {
   try {
+    const latestPosts = await Posts.aggregate([
+      { $sort: { created_at: -1 } },
+      {
+        $group: {
+          _id: "$category_id",
+          latestPost: { $first: "$$ROOT" },
+        },
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "_id",
+          foreignField: "_id",
+          as: "categoryData",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          id: "$latestPost._id",
+          title: "$latestPost.title",
+          content: "$latestPost.content",
+          created_at: "$latestPost.created_at",
+          updated_at: "$latestPost.updated_at",
+          category: { $arrayElemAt: ["$categoryData.category", 0] },
+        },
+      },
+    ]);
+    res.json(latestPosts);
   } catch (err) {
     next(err);
   }

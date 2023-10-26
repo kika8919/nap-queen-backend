@@ -6,6 +6,7 @@ import { validate } from "../middlewares/validate";
 export const router = express.Router();
 
 router.get("/", PostsController.getAllPosts);
+router.get("/latest", PostsController.getLatestPosts);
 router.get(
   "/:id",
   validate(PostsValidation.getPostsById),
@@ -26,4 +27,3 @@ router.delete(
   validate(PostsValidation.deletePosts),
   PostsController.deletePosts
 );
-router.get("/latest", PostsController.getLatestPosts);
