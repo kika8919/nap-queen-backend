@@ -18,7 +18,7 @@
         "noImplicitAny": false,
         "noImplicitThis": false,
         "strictNullChecks": false,
-        "outDir": "./build",
+        "outDir": "./dist",
         "baseUrl": ".",
         "paths": {
             "@server/*": [
@@ -38,6 +38,6 @@
     ],
     "exclude": [
         "node_modules",
-        "build"
+        "dist"
     ]
 }

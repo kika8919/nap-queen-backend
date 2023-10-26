@@ -1,0 +1,1 @@
+{"version":3,"file":"Category.js","sourceRoot":"","sources":["../../src/models/Category.ts"],"names":[],"mappings":";;;;AAAA,gEAAgC;AAQnB,QAAA,cAAc,GAAG,IAAI,kBAAQ,CAAC,MAAM,CAC/C;IACE,QAAQ,EAAE,MAAM;CACjB,EACD;IACE,UAAU,EAAE;QACV,SAAS,EAAE,YAAY;QACvB,SAAS,EAAE,YAAY;KACxB;CACF,CACF,CAAC;AAEW,QAAA,UAAU,GAAG,kBAAQ,CAAC,KAAK,CACtC,UAAU,EACV,sBAAc,CACf,CAAC"}
