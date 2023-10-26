@@ -41,7 +41,7 @@ describe("Server and API Unit Testing", async () => {
         content: "This is a sample resource.",
       };
       const res = await supertest(app).post("/api/posts").send(requestBody);
-      expect(res.status).to.equal(500);
+      expect(res.status).to.equal(400);
       expect(res.body).to.have.property("errors");
       expect(res.body.errors).to.have.property("message");
     });
@@ -65,7 +65,7 @@ describe("Server and API Unit Testing", async () => {
         content: "This is a sample resource.",
       };
       const res = await supertest(app).post("/api/posts").send(requestBody);
-      generatedBlogPostId = res.body._id;
+      generatedBlogPostId = res.body.id;
       expect(res.status).to.equal(200);
       expect(res.body.title).to.be.equal(requestBody.title);
       expect(res.body.content).to.be.equal(requestBody.content);
@@ -103,9 +103,9 @@ describe("Server and API Unit Testing", async () => {
     });
 
     // GET POST BY ID
-    it("GET /api/posts/:id with invalid objectId should return a 500 status code", async () => {
+    it("GET /api/posts/:id with invalid objectId should return a 400 status code", async () => {
       const res = await supertest(app).get("/api/posts/aaaa0181460f107ce5dddd");
-      expect(res.status).to.equal(500);
+      expect(res.status).to.equal(400);
       expect(res.body).to.have.property("errors");
       expect(res.body.errors).to.have.property("message");
       expect(res.body.errors.message).to.equal('"id" must be a valid mongo id');
@@ -114,8 +114,8 @@ describe("Server and API Unit Testing", async () => {
     it("GET /api/posts/:id should return a 200 status code", async () => {
       const res = await supertest(app).get(`/api/posts/${generatedBlogPostId}`);
       expect(res.status).to.equal(200);
-      expect(res.body).to.have.property("_id");
-      expect(res.body._id).to.equal(generatedBlogPostId);
+      expect(res.body).to.have.property("id");
+      expect(res.body.id).to.equal(generatedBlogPostId);
     });
 
     // UPDATE POST
@@ -140,7 +140,7 @@ describe("Server and API Unit Testing", async () => {
       const res = await supertest(app)
         .put("/api/posts/6539fec48da5f370d72a508a")
         .send(requestBody);
-      expect(res.status).to.equal(500);
+      expect(res.status).to.equal(400);
       expect(res.body).to.have.property("errors");
       expect(res.body.errors).to.have.property("message");
     });
@@ -154,18 +154,18 @@ describe("Server and API Unit Testing", async () => {
         .put(`/api/posts/${generatedBlogPostId}`)
         .send(requestBody);
       expect(res.status).to.equal(200);
-      expect(res.body).to.have.property("_id");
-      expect(res.body._id).to.be.equal(generatedBlogPostId);
+      expect(res.body).to.have.property("id");
+      expect(res.body.id).to.be.equal(generatedBlogPostId);
       expect(res.body.title).to.be.equal(requestBody.title);
       expect(res.body.content).to.be.equal(requestBody.content);
     });
 
     // DELETE POST
-    it("DELETE /api/posts/:id with invalid objectId should return a 500 status code", async () => {
+    it("DELETE /api/posts/:id with invalid objectId should return a 400 status code", async () => {
       const res = await supertest(app).delete(
         "/api/posts/aaaa0181460f107ce5dddd"
       );
-      expect(res.status).to.equal(500);
+      expect(res.status).to.equal(400);
       expect(res.body).to.have.property("errors");
       expect(res.body.errors).to.have.property("message");
       expect(res.body.errors.message).to.equal('"id" must be a valid mongo id');

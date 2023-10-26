@@ -8,7 +8,7 @@ export const getAllPosts = async (
 ): Promise<void> => {
   try {
     const allPosts = await Posts.find();
-    res.json(allPosts);
+    res.json(allPosts.map((post) => post.toUniformJSON()));
   } catch (err) {
     next(err);
   }
@@ -28,11 +28,8 @@ export const getPostsById = async (
       "category",
       "Category"
     );
-    const responseCopy = { ...(post.toJSON() as any) };
-    responseCopy.category = responseCopy.category_id.category;
-    responseCopy.category_id = responseCopy.category_id._id;
 
-    res.json(responseCopy);
+    res.json(post.toCategoryJSON());
   } catch (err) {
     next(err);
   }
@@ -55,7 +52,7 @@ export const createPosts = async (
       category_id,
     });
     const result = await Posts.create(newPost);
-    res.json(result);
+    res.json(result.toUniformJSON());
   } catch (err) {
     next(err);
   }
@@ -79,7 +76,7 @@ export const updatePosts = async (
     if (!updatedPost) {
       res.json({ message: "post with input id not found" });
     } else {
-      res.json(updatedPost);
+      res.json(updatedPost.toUniformJSON());
     }
   } catch (err) {
     next(err);

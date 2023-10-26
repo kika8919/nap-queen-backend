@@ -28,7 +28,16 @@ export const validate =
       const errorMessage = error.details
         .map((details) => details.message)
         .join(", ");
-      let err = new Error(errorMessage);
+      class BadRequestError extends Error {
+        status: number;
+        constructor(message: string) {
+          super(message);
+          this.name = "Bad Request";
+          this.status = 400;
+        }
+      }
+
+      let err = new BadRequestError(errorMessage);
       err.stack = "";
       return next(err);
     }
