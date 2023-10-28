@@ -222,7 +222,7 @@ describe("Server and API Unit Testing", async () => {
         .send(requestBody);
       expect(res.status).to.equal(200);
       expect(res.body).to.have.property("id");
-      expect(res.body._id).to.be.equal(generatedCategoryId);
+      expect(res.body.id).to.be.equal(generatedCategoryId);
     });
 
     // DELETE CATEGORY
