@@ -73,7 +73,7 @@ describe("Server and API Unit Testing", async () => {
     });
 
     // GET LATEST POSTS
-    it("GET /api/posts/latest with incorrect apikey should return 200 status code", async () => {
+    it("GET /api/posts/latest with incorrect apikey should return 403 status code", async () => {
       const res = await supertest(app)
         .get("/api/posts/latest")
         .set("x-api-key", "wrongApiKey");
@@ -199,7 +199,7 @@ describe("Server and API Unit Testing", async () => {
         category: "test category",
       };
       const res = await supertest(app).post("/api/category").send(requestBody);
-      generatedCategoryId = res.body._id;
+      generatedCategoryId = res.body.id;
       expect(res.status).to.equal(200);
       expect(res.body.category).to.be.equal(requestBody.category);
     });
@@ -221,7 +221,7 @@ describe("Server and API Unit Testing", async () => {
         .put(`/api/category/${generatedCategoryId}`)
         .send(requestBody);
       expect(res.status).to.equal(200);
-      expect(res.body).to.have.property("_id");
+      expect(res.body).to.have.property("id");
       expect(res.body._id).to.be.equal(generatedCategoryId);
     });
 

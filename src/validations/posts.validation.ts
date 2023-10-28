@@ -18,7 +18,7 @@ export const createPosts = {
   body: Joi.object().keys({
     title: Joi.string().required(),
     content: Joi.string().required(),
-    category_id: Joi.string().required(),
+    category_id: Joi.string().required().custom(objectId),
   }),
 };
 
@@ -35,5 +35,14 @@ export const updatePosts = {
 export const deletePosts = {
   params: Joi.object().keys({
     id: Joi.required().custom(objectId),
+  }),
+};
+
+export const getPostByCategory = {
+  params: Joi.object().keys({
+    name: Joi.string().required(),
+  }),
+  query: Joi.object().keys({
+    count: Joi.number().default(10).min(1),
   }),
 };

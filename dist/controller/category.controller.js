@@ -6,7 +6,7 @@ const models_1 = require("../models");
 const getAllCategories = (_req, res, next) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
         const allCategories = yield models_1.Categories.find();
-        res.json(allCategories);
+        res.json(allCategories.map((category) => category.toJson()));
     }
     catch (err) {
         next(err);
@@ -18,7 +18,7 @@ const createCategory = (req, res, next) => tslib_1.__awaiter(void 0, void 0, voi
         const { category } = req.body;
         const newCategory = new models_1.Categories({ category });
         const result = yield models_1.Categories.create(newCategory);
-        res.json(result);
+        res.json(result.toJson());
     }
     catch (err) {
         next(err);
@@ -32,7 +32,12 @@ const updateCategory = (req, res, next) => tslib_1.__awaiter(void 0, void 0, voi
         const updatedCategory = yield models_1.Categories.findByIdAndUpdate(id, {
             $set: { category },
         }, { new: true });
-        res.json(updatedCategory);
+        if (!exports.updateCategory) {
+            res.json({ message: "invalid categoryId" });
+        }
+        else {
+            res.json(updatedCategory.toJson());
+        }
     }
     catch (err) {
         next(err);
@@ -42,8 +47,13 @@ exports.updateCategory = updateCategory;
 const deleteCategory = (req, res, next) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        yield models_1.Categories.findByIdAndDelete(id);
-        res.json({ message: "success" });
+        const deletedCategory = yield models_1.Categories.findByIdAndDelete(id);
+        if (!deletedCategory) {
+            res.json({ message: "invalid categoryId" });
+        }
+        else {
+            res.json({ message: "success" });
+        }
     }
     catch (err) {
         next(err);

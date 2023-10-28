@@ -22,10 +22,10 @@
     "baseUrl": ".",
     "paths": {
       "@server/*": ["src/*"],
-      "@tests/*": ["tests/*"],
+      "@tests/*": ["test/*"],
       "@config/*": ["src/config/*"]
     }
   },
-  "include": ["src/**/*", "tests/*"],
+  "include": ["src/**/*", "test/*"],
   "exclude": ["node_modules", "dist"]
 }

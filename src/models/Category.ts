@@ -4,7 +4,9 @@ interface ICategory {
   category: string;
 }
 
-interface ICategoryDocument extends ICategory, Document {}
+interface ICategoryDocument extends ICategory, Document {
+  toJson: () => ICategory;
+}
 
 export const CategorySchema = new mongoose.Schema<ICategoryDocument>(
   {
@@ -17,6 +19,12 @@ export const CategorySchema = new mongoose.Schema<ICategoryDocument>(
     },
   }
 );
+CategorySchema.methods.toJson = function () {
+  return {
+    id: this._id,
+    category: this.category,
+  };
+};
 
 export const Categories = mongoose.model<ICategoryDocument>(
   "Category",

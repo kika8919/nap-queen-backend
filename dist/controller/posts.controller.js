@@ -18,6 +18,9 @@ const getPostsById = (req, res, next) => tslib_1.__awaiter(void 0, void 0, void 
         const { id } = req.params;
         // populating category here for sending in response
         const post = yield models_1.Posts.findById(id).populate("category_id", "category", "Category");
+        if (!post) {
+            return res.json({ message: "post with input id not found" });
+        }
         res.json(post.toCategoryJSON());
     }
     catch (err) {
@@ -27,16 +30,12 @@ const getPostsById = (req, res, next) => tslib_1.__awaiter(void 0, void 0, void 
 exports.getPostsById = getPostsById;
 const createPosts = (req, res, next) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title, content, category_id } = req.body;
+        const { category_id } = req.body;
         const category = yield models_1.Categories.findById(category_id);
         if (!category) {
             return res.status(400).json({ error: "Invalid category_id" });
         }
-        const newPost = new models_1.Posts({
-            title,
-            content,
-            category_id,
-        });
+        const newPost = new models_1.Posts(req.body);
         const result = yield models_1.Posts.create(newPost);
         res.json(result.toUniformJSON());
     }

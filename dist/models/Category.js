@@ -11,5 +11,11 @@ exports.CategorySchema = new mongoose_1.default.Schema({
         updatedAt: "updated_at",
     },
 });
+exports.CategorySchema.methods.toJson = function () {
+    return {
+        id: this._id,
+        category: this.category,
+    };
+};
 exports.Categories = mongoose_1.default.model("Category", exports.CategorySchema);
 //# sourceMappingURL=Category.js.map

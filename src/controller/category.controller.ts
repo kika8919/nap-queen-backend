@@ -8,7 +8,7 @@ export const getAllCategories = async (
 ): Promise<void> => {
   try {
     const allCategories = await Categories.find();
-    res.json(allCategories);
+    res.json(allCategories.map((category) => category.toJson()));
   } catch (err) {
     next(err);
   }
@@ -23,7 +23,7 @@ export const createCategory = async (
     const { category } = req.body;
     const newCategory = new Categories({ category });
     const result = await Categories.create(newCategory);
-    res.json(result);
+    res.json(result.toJson());
   } catch (err) {
     next(err);
   }
@@ -44,7 +44,11 @@ export const updateCategory = async (
       },
       { new: true }
     );
-    res.json(updatedCategory);
+    if (!updateCategory) {
+      res.json({ message: "invalid categoryId" });
+    } else {
+      res.json(updatedCategory.toJson());
+    }
   } catch (err) {
     next(err);
   }
@@ -57,8 +61,12 @@ export const deleteCategory = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    await Categories.findByIdAndDelete(id);
-    res.json({ message: "success" });
+    const deletedCategory = await Categories.findByIdAndDelete(id);
+    if (!deletedCategory) {
+      res.json({ message: "invalid categoryId" });
+    } else {
+      res.json({ message: "success" });
+    }
   } catch (err) {
     next(err);
   }

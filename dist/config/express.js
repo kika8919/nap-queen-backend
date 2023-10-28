@@ -13,7 +13,7 @@ const routes_1 = tslib_1.__importDefault(require("../routes"));
 dotenv.config();
 exports.HOST = process.env.HOST || "localhost";
 /* istanbul ignore next */
-exports.PORT = (process.env.PORT || 3000);
+exports.PORT = process.env.PORT || "3000";
 const createServer = () => {
     const app = express_1.default();
     db_connect_1.default();

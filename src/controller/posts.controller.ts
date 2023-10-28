@@ -18,7 +18,7 @@ export const getPostsById = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
-): Promise<void> => {
+): Promise<void | express.Response<any>> => {
   try {
     const { id } = req.params;
 
@@ -28,7 +28,9 @@ export const getPostsById = async (
       "category",
       "Category"
     );
-
+    if (!post) {
+      return res.json({ message: "post with input id not found" });
+    }
     res.json(post.toCategoryJSON());
   } catch (err) {
     next(err);
@@ -41,16 +43,12 @@ export const createPosts = async (
   next: express.NextFunction
 ): Promise<void | express.Response<any>> => {
   try {
-    const { title, content, category_id } = req.body;
+    const { category_id } = req.body;
     const category = await Categories.findById(category_id);
     if (!category) {
       return res.status(400).json({ error: "Invalid category_id" });
     }
-    const newPost = new Posts({
-      title,
-      content,
-      category_id,
-    });
+    const newPost = new Posts(req.body);
     const result = await Posts.create(newPost);
     res.json(result.toUniformJSON());
   } catch (err) {

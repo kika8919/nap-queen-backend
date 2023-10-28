@@ -11,7 +11,7 @@ dotenv.config();
 
 export const HOST = process.env.HOST || "localhost";
 /* istanbul ignore next */
-export const PORT = (process.env.PORT || 3000) as number;
+export const PORT = process.env.PORT || "3000";
 
 export const createServer = (): express.Application => {
   const app = express();
