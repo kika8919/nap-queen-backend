@@ -225,6 +225,19 @@ describe("Server and API Unit Testing", async () => {
       expect(res.body.id).to.be.equal(generatedCategoryId);
     });
 
+    it("PUT /api/category/:id should return joi validation error for missing category in body", async () => {
+      const requestBody = {
+        // missing category
+        content: "This is a sample resource.",
+      };
+      const res = await supertest(app)
+        .put(`/api/category/${generatedCategoryId}`)
+        .send(requestBody);
+      expect(res.status).to.equal(400);
+      expect(res.body).to.have.property("errors");
+      expect(res.body.errors).to.have.property("message");
+    });
+
     // DELETE CATEGORY
     it("DELETE /api/category/:id with with valid objectId should return 200 status code", async () => {
       const res = await supertest(app).delete(
