@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCategory = exports.updateCategory = exports.createCategory = exports.getAllCategories = void 0;
+exports.deleteCategory = exports.updateCategory = exports.createCategory = exports.getCategoryById = exports.getAllCategories = void 0;
 const tslib_1 = require("tslib");
 const models_1 = require("../models");
 const getAllCategories = (_req, res, next) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
@@ -13,6 +13,22 @@ const getAllCategories = (_req, res, next) => tslib_1.__awaiter(void 0, void 0, 
     }
 });
 exports.getAllCategories = getAllCategories;
+const getCategoryById = (req, res, next) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const cat = models_1.Categories.findById(id);
+        if (!cat) {
+            res.json({ message: "input id not found" });
+        }
+        else {
+            res.json(cat);
+        }
+    }
+    catch (err) {
+        next(err);
+    }
+});
+exports.getCategoryById = getCategoryById;
 const createCategory = (req, res, next) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
         const { category } = req.body;

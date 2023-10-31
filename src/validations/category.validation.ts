@@ -8,6 +8,12 @@ const objectId = (value, helpers) => {
   return value;
 };
 
+export const getCategoryById = {
+  params: Joi.object().keys({
+    id: Joi.required().custom(objectId),
+  }),
+};
+
 export const createCategory = {
   body: Joi.object().keys({
     category: Joi.string().required(),

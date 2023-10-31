@@ -12,9 +12,10 @@ describe("Server and API Unit Testing", async () => {
     process.exit(0);
   });
 
-  it("GET /health should return a 200 status code", async () => {
+  it("GET /health should return 200 status code", async () => {
     const res = await supertest(app).get("/health");
     expect(res.status).to.equal(200);
+    expect(res.body).to.haveOwnProperty("uptime");
     expect(res.body.status).to.equal("UP");
   });
 
@@ -49,7 +50,7 @@ describe("Server and API Unit Testing", async () => {
     it("POST /api/posts should return 400 status code for wrong category_id", async () => {
       const requestBody = {
         title: "test title",
-        category_id: "6539fec48da5f370d72a508b",
+        category_id: "6539aaa48da5f370d72a508b",
         content: "This is a sample resource.",
       };
       const res = await supertest(app).post("/api/posts").send(requestBody);
@@ -109,6 +110,15 @@ describe("Server and API Unit Testing", async () => {
       expect(res.body).to.have.property("errors");
       expect(res.body.errors).to.have.property("message");
       expect(res.body.errors.message).to.equal('"id" must be a valid mongo id');
+    });
+
+    it("GET /api/posts/:id with non existing valid objectId should return post with input id not found", async () => {
+      const res = await supertest(app).get(
+        "/api/posts/aaaa0181460f107ce5dddaaa"
+      );
+      expect(res.status).to.equal(200);
+      expect(res.body).to.have.property("message");
+      expect(res.body.message).to.equal("post with input id not found");
     });
 
     it("GET /api/posts/:id should return a 200 status code", async () => {
@@ -223,6 +233,19 @@ describe("Server and API Unit Testing", async () => {
       expect(res.status).to.equal(200);
       expect(res.body).to.have.property("id");
       expect(res.body.id).to.be.equal(generatedCategoryId);
+    });
+
+    it("PUT /api/category/:id with invalid id param should return 400 bad request ", async () => {
+      const requestBody = {
+        category: "test category 2",
+      };
+      const res = await supertest(app)
+        .put(`/api/category/${generatedCategoryId}dd`)
+        .send(requestBody);
+      console.log(res.body);
+      expect(res.status).to.equal(400);
+      expect(res.body).to.have.property("errors");
+      expect(res.body.errors).to.have.property("message");
     });
 
     it("PUT /api/category/:id should return joi validation error for missing category in body", async () => {

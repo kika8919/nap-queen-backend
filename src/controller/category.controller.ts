@@ -14,6 +14,24 @@ export const getAllCategories = async (
   }
 };
 
+export const getCategoryById = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const cat = Categories.findById(id);
+    if (!cat) {
+      res.json({ message: "input id not found" });
+    } else {
+      res.json(cat);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const createCategory = async (
   req: express.Request,
   res: express.Response,

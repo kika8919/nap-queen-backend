@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCategory = exports.updateCategory = exports.createCategory = void 0;
+exports.deleteCategory = exports.updateCategory = exports.createCategory = exports.getCategoryById = void 0;
 const tslib_1 = require("tslib");
 const joi_1 = tslib_1.__importDefault(require("joi"));
 // custom objectId validation for mongodb id
@@ -9,6 +9,11 @@ const objectId = (value, helpers) => {
         return helpers.message("{{#label}} must be a valid mongo id");
     }
     return value;
+};
+exports.getCategoryById = {
+    params: joi_1.default.object().keys({
+        id: joi_1.default.required().custom(objectId),
+    }),
 };
 exports.createCategory = {
     body: joi_1.default.object().keys({
